@@ -6,70 +6,82 @@ import CalendarReducer from "./calendarReducer";
 
 import {
   CALENDAR_SET_DAY,
-  CALENDAR_SET_MONTH,
-  CALENDAR_SET_YEAR,
-  CALENDAR_VIEW_DAY,
-  CALENDAR_VIEW_WEEK,
-  CALENDAR_VIEW_MONTH,
-  CALENDAR_VIEW_YEAR,
+  CALENDAR_ADD_DAY,
+  CALENDAR_ADD_WEEK,
+  CALENDAR_ADD_MONTH,
+  CALENDAR_ADD_YEAR,
+  CALENDAR_VIEW,
+  CALENDAR_VIEW_TYPE_DAY,
+  CALENDAR_VIEW_TYPE_WEEK,
+  CALENDAR_VIEW_TYPE_MONTH,
+  CALENDAR_VIEW_TYPE_YEAR,
+  CALENDAR_LOAD_EVENTS,
 } from "../types";
 
 const CalendarState = (props) => {
   const initialState = {
-    view: "MONTH",
-    day: new Date().getDate(),
-    month: new Date().getMonth() + 1,
-    year: new Date().getFullYear(),
+    view: CALENDAR_VIEW_TYPE_WEEK,
+    date: {
+      day: new Date().getDayYear(),
+      week: new Date().getWeek(),
+      month: new Date().getMonth() + 1,
+      year: new Date().getFullYear(),
+    },
+    events: null,
   };
 
   const [state, dispatch] = useReducer(CalendarReducer, initialState);
 
-  const setDay = (day) => {
+  const setDate = (year, month, day) => {
     dispatch({
       type: CALENDAR_SET_DAY,
-      payload: day,
+      payload: {
+        year,
+        month,
+        day
+      },
     });
   };
 
-  const setMonth = (month) => {
+  const addDay = (days) => {
     dispatch({
-      type: CALENDAR_SET_MONTH,
-      payload: month,
+      type: CALENDAR_ADD_DAY,
+      payload: days,
     });
   };
 
-  const setYear = (year) => {
+  const addWeek = (weeks) => {
     dispatch({
-      type: CALENDAR_SET_YEAR,
-      payload: year,
+      type: CALENDAR_ADD_WEEK,
+      payload: weeks,
     });
   };
 
-  const viewDay = () => {
+  const addMonth = (months) => {
     dispatch({
-      type: CALENDAR_VIEW_DAY,
-      payload: "DAY",
+      type: CALENDAR_ADD_MONTH,
+      payload: months,
     });
   };
 
-  const viewWeek = () => {
+  const addYear = (years) => {
     dispatch({
-      type: CALENDAR_VIEW_WEEK,
-      payload: "WEEK",
+      type: CALENDAR_ADD_YEAR,
+      payload: years,
     });
   };
 
-  const viewMonth = () => {
+  const showView = (type) => {
     dispatch({
-      type: CALENDAR_VIEW_MONTH,
-      payload: "MONTH",
+      type: CALENDAR_VIEW,
+      payload: type,
     });
   };
 
-  const viewYear = () => {
+  const loadEvents = (type, date) => {
     dispatch({
-      type: CALENDAR_VIEW_YEAR,
-      payload: "YEAR",
+      type: CALENDAR_LOAD_EVENTS,
+      payload: type,
     });
   };
 
@@ -77,16 +89,15 @@ const CalendarState = (props) => {
     <CalendarContext.Provider
       value={{
         view: state.view,
-        day: state.day,
-        month: state.month,
-        year: state.year,
-        setDay,
-        setMonth,
-        setYear,
-        viewDay,
-        viewWeek,
-        viewMonth,
-        viewYear,
+        date: state.date,
+        events: state.events,
+        setDate,
+        addDay,
+        addWeek,
+        addMonth,
+        addYear,
+        showView,
+        loadEvents,
       }}
     >
       {props.children}
@@ -95,3 +106,8 @@ const CalendarState = (props) => {
 };
 
 export default CalendarState;
+
+export const CALENDAR_TYPE_YEAR = CALENDAR_VIEW_TYPE_YEAR;
+export const CALENDAR_TYPE_MONTH = CALENDAR_VIEW_TYPE_MONTH;
+export const CALENDAR_TYPE_WEEK = CALENDAR_VIEW_TYPE_WEEK;
+export const CALENDAR_TYPE_DAY = CALENDAR_VIEW_TYPE_DAY;

@@ -1,14 +1,15 @@
 import React from "react";
 
 import "./App.css";
-import Month from "./components/calendar/Month";
+
 import CalendarState from "./contexts/calendar/CalendarState";
+import Calendar from "./components/pages/Calendar";
 
 const App = () => {
   return (
     <CalendarState>
       <div className='App'>
-        <Month />
+        <Calendar />
       </div>
     </CalendarState>
   );
